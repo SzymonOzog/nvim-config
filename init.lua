@@ -16,12 +16,19 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
     'tpope/vim-fugitive',
     'mbbill/undotree',
+    -- {
+    --     -- Theme inspired by Atom
+    --     'navarasu/onedark.nvim',
+    --     priority = 1000,
+    --     config = function()
+    --         vim.cmd.colorscheme 'onedark'
+    --     end,
+    -- },
     {
         -- Theme inspired by Atom
-        'navarasu/onedark.nvim',
-        priority = 1000,
+        'morhetz/gruvbox',
         config = function()
-            vim.cmd.colorscheme 'onedark'
+            vim.cmd.colorscheme 'gruvbox'
         end,
     },
     { 'folke/which-key.nvim',          opts = {} },
