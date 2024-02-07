@@ -23,3 +23,7 @@ vim.opt.scrolloff = 8
 
 vim.opt.termguicolors = true
 vim.opt.signcolumn = "yes"
+
+vim.opt.autoindent = true
+vim.opt.smartindent = true
+vim.opt.wrap = false
