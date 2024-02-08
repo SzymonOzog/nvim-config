@@ -33,7 +33,7 @@ require('lazy').setup({
     },
     { 'folke/which-key.nvim',          opts = {} },
     { 'rmagatti/auto-session',         opts = {} },
-    { 'nvim/telescope/telescope.nvim', branch = '0.1.x', dependencies = { 'nvim-lua/plenary.nvim' } },
+    { 'nvim-telescope/telescope.nvim', branch = '0.1.x', dependencies = { 'nvim-lua/plenary.nvim' } },
     { 'numToStr/Comment.nvim',         opts = {} },
 
 
