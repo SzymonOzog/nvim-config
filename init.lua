@@ -16,16 +16,10 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
     'tpope/vim-fugitive',
     'mbbill/undotree',
-    -- {
-    --     -- Theme inspired by Atom
-    --     'navarasu/onedark.nvim',
-    --     priority = 1000,
-    --     config = function()
-    --         vim.cmd.colorscheme 'onedark'
-    --     end,
-    -- },
+    'mfussenegger/nvim-dap',
+    'mfussenegger/nvim-dap-python',
+    -- 'rcarriga/nvim-dap-ui',
     {
-        -- Theme inspired by Atom
         'morhetz/gruvbox',
         config = function()
             vim.cmd.colorscheme 'gruvbox'
@@ -91,3 +85,6 @@ require("remap")
 require("treesitter")
 require("lsp")
 require("harpoonBindings")
+require ('nvim-treesitter.install').compilers = { "clang" }
+require('dap-python').setup('venv/scripts/python')
+-- require("dapui").setup()
