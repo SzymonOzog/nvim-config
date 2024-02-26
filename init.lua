@@ -18,6 +18,7 @@ require('lazy').setup({
     'mbbill/undotree',
     'mfussenegger/nvim-dap',
     'mfussenegger/nvim-dap-python',
+    'github/copilot.vim',
     -- 'rcarriga/nvim-dap-ui',
     {
         'morhetz/gruvbox',
@@ -27,8 +28,9 @@ require('lazy').setup({
     },
     { 'folke/which-key.nvim',          opts = {} },
     { 'rmagatti/auto-session',         opts = {} },
-    { 'nvim-telescope/telescope.nvim', branch = '0.1.x', dependencies = { 'nvim-lua/plenary.nvim' } },
+    { 'nvim-telescope/telescope.nvim', branch = '0.1.x',                       dependencies = { 'nvim-lua/plenary.nvim' } },
     { 'numToStr/Comment.nvim',         opts = {} },
+    { 'zadirion/Unreal.nvim',          dependencies = { 'tpope/vim-dispatch' } },
 
 
     {
@@ -85,6 +87,9 @@ require("remap")
 require("treesitter")
 require("lsp")
 require("harpoonBindings")
-require ('nvim-treesitter.install').compilers = { "clang" }
+require('nvim-treesitter.install').compilers = { "clang" }
 require('dap-python').setup('venv/scripts/python')
+require('dap_config')
+require('colors')
+require('copilot_setup')
 -- require("dapui").setup()
