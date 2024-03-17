@@ -19,7 +19,7 @@ require('lazy').setup({
     'mfussenegger/nvim-dap',
     'mfussenegger/nvim-dap-python',
     'github/copilot.vim',
-    -- 'rcarriga/nvim-dap-ui',
+    'rcarriga/nvim-dap-ui',
     {
         'morhetz/gruvbox',
         config = function()
@@ -88,8 +88,8 @@ require("treesitter")
 require("lsp")
 require("harpoonBindings")
 require('nvim-treesitter.install').compilers = { "clang" }
-require('dap-python').setup('venv/scripts/python')
+require('dap-python').setup('python')
 require('dap_config')
 require('colors')
 require('copilot_setup')
--- require("dapui").setup()
+require("dapui").setup()
