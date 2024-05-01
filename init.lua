@@ -20,6 +20,7 @@ require('lazy').setup({
     'mfussenegger/nvim-dap-python',
     'github/copilot.vim',
     'rcarriga/nvim-dap-ui',
+    'theHamsta/nvim-dap-virtual-text',
     {
         'morhetz/gruvbox',
         config = function()
@@ -93,3 +94,4 @@ require('dap_config')
 require('colors')
 require('copilot_setup')
 require("dapui").setup()
+require("nvim-dap-virtual-text").setup()

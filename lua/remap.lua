@@ -18,10 +18,8 @@ vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc
 vim.keymap.set('n', '<leader>sG', ':LiveGrepGitRoot<cr>', { desc = '[S]earch by [G]rep on Git Root' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = '[S]earch [R]esume' })
-
 vim.keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle, { desc = '[U]ndootree' })
 vim.keymap.set('n', '<leader>gs', vim.cmd.Git, { desc = '[G]it [S]tuff' })
---
 vim.keymap.set('n', '<esc>', vim.cmd.noh)
 
 vim.keymap.set('v', "J", ":m '>+1<CR>gv=gv")
@@ -51,14 +49,17 @@ vim.keymap.set('n', '<Leader>dl', function() require('dap').run_last() end)
 vim.keymap.set({ 'n', 'v' }, '<Leader>dh', function()
     require('dap.ui.widgets').hover()
 end, { desc = '[D]ebug [H]hover' })
+
 vim.keymap.set({ 'n', 'v' }, '<Leader>dp', function()
     require('dap.ui.widgets').preview()
 end, { desc = '[D]ebug [P]review' })
+
 vim.keymap.set('n', '<Leader>df', function()
     local widgets = require('dap.ui.widgets')
     widgets.centered_float(widgets.frames)
 end, { desc = '[D]ebug [F]rames' })
-vim.keymap.set('n', '<Leader>ds', function()
+
+vim.keymap.set('n', '<Leader>dS', function()
     local widgets = require('dap.ui.widgets')
     widgets.centered_float(widgets.scopes)
 end, { desc = '[D]ebug [S]copes' })
