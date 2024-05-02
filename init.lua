@@ -19,6 +19,7 @@ require('lazy').setup({
     'mfussenegger/nvim-dap',
     'mfussenegger/nvim-dap-python',
     'github/copilot.vim',
+    { "nvim-neotest/nvim-nio" },
     'rcarriga/nvim-dap-ui',
     'theHamsta/nvim-dap-virtual-text',
     {
