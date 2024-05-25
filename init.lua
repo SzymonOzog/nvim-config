@@ -34,6 +34,12 @@ require('lazy').setup({
     { 'numToStr/Comment.nvim',         opts = {} },
     { 'zadirion/Unreal.nvim',          dependencies = { 'tpope/vim-dispatch' } },
 
+    {
+      'tzachar/local-highlight.nvim',
+       config = function()
+        require('local-highlight').setup()
+       end
+    },
 
     {
         'neovim/nvim-lspconfig',
@@ -96,3 +102,10 @@ require('colors')
 require('copilot_setup')
 require("dapui").setup()
 require("nvim-dap-virtual-text").setup()
+require('local-highlight').setup({
+    cw_hlgroup = nil,
+    insert_mode = false,
+    min_match_len = 1,
+    max_match_len = math.huge,
+    highlight_single_match = true,
+})
