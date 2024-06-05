@@ -19,7 +19,9 @@ require('lazy').setup({
     'mfussenegger/nvim-dap',
     'mfussenegger/nvim-dap-python',
     'github/copilot.vim',
-    -- 'rcarriga/nvim-dap-ui',
+    { "nvim-neotest/nvim-nio" },
+    'rcarriga/nvim-dap-ui',
+    'theHamsta/nvim-dap-virtual-text',
     {
         'morhetz/gruvbox',
         config = function()
@@ -32,6 +34,12 @@ require('lazy').setup({
     { 'numToStr/Comment.nvim',         opts = {} },
     { 'zadirion/Unreal.nvim',          dependencies = { 'tpope/vim-dispatch' } },
 
+    {
+      'tzachar/local-highlight.nvim',
+       config = function()
+        require('local-highlight').setup()
+       end
+    },
 
     {
         'neovim/nvim-lspconfig',
@@ -88,8 +96,16 @@ require("treesitter")
 require("lsp")
 require("harpoonBindings")
 require('nvim-treesitter.install').compilers = { "clang" }
-require('dap-python').setup('venv/scripts/python')
+require('dap-python').setup('python')
 require('dap_config')
 require('colors')
 require('copilot_setup')
--- require("dapui").setup()
+require("dapui").setup()
+require("nvim-dap-virtual-text").setup()
+require('local-highlight').setup({
+    cw_hlgroup = nil,
+    insert_mode = false,
+    min_match_len = 1,
+    max_match_len = math.huge,
+    highlight_single_match = true,
+})
