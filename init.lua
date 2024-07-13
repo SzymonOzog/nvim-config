@@ -23,9 +23,9 @@ require('lazy').setup({
     'rcarriga/nvim-dap-ui',
     'theHamsta/nvim-dap-virtual-text',
     {
-        'morhetz/gruvbox',
+        'rebelot/kanagawa.nvim',
         config = function()
-            vim.cmd.colorscheme 'gruvbox'
+            vim.cmd.colorscheme 'kanagawa-wave'
         end,
     },
     { 'folke/which-key.nvim',          opts = {} },
