@@ -1,3 +1,24 @@
+local util = require 'lspconfig.util'
+local function switch_source_header()
+  bufnr = 0
+  bufnr = util.validate_bufnr(bufnr)
+  local clangd_client = util.get_active_client_by_name(bufnr, 'clangd')
+  local params = { uri = vim.uri_from_bufnr(bufnr) }
+  if clangd_client then
+    clangd_client.request('textDocument/switchSourceHeader', params, function(err, result)
+      if err then
+        error(tostring(err))
+      end
+      if not result then
+        print 'Corresponding file cannot be determined'
+        return
+      end
+      vim.api.nvim_command('edit ' .. vim.uri_to_fname(result))
+    end, bufnr)
+  else
+    print 'method textDocument/switchSourceHeader is not supported by any servers active on the current buffer'
+  end
+end
 
 local on_attach = function(_, bufnr)
   -- NOTE: Remember that hellolua is a real programming language, and as such it is possible
@@ -17,6 +38,11 @@ print("lsp attached")
 
   nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
   nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+
+  local clangd_client = util.get_active_client_by_name(bufnr, 'clangd')
+  if clangd_client then
+    nmap('gs', switch_source_header, '[g]oto [s]econd')
+  end
 
   nmap('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
   nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
@@ -64,6 +90,7 @@ require('which-key').register({
 
 require('mason').setup()
 require('mason-lspconfig').setup()
+require('lspconfig').clangd.setup({})
 
 local servers = {
   lua_ls = {
