@@ -2,6 +2,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 vim.keymap.set('t', '<Esc>', '<C-\\><C-n>')
+
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 vim.keymap.set("n", "<leader>E", vim.cmd.Ex, { desc = '[E]xplorer' })
 
@@ -71,7 +72,6 @@ vim.keymap.set('n', '<Leader>ma', function()
     local line = vim.fn.line('.')
     local file = vim.fn.expand('%:p')
     local command = "manimgl " .. file .. " -se " .. tostring(line)
-    vim.cmd("split | terminal " .. command)
+    vim.cmd("botright split | terminal " .. command)
 end,
 { desc = "[m][a]nim"})
-
