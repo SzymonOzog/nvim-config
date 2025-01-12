@@ -65,3 +65,12 @@ vim.keymap.set('n', '<Leader>dS', function()
 end, { desc = '[D]ebug [S]copes' })
 
 vim.keymap.set('n', '<Leader>du', function() require('dapui').toggle() end, { desc = '[D]ebug [U]I' })
+
+vim.keymap.set('n', '<Leader>ma', function()
+    local line = vim.fn.line('.')
+    local file = vim.fn.expand('%:p')
+    local command = "manimgl " .. file .. " -se " .. tostring(line)
+    vim.cmd("split | terminal " .. command)
+end,
+{ desc = "[m][a]nim"})
+
