@@ -68,10 +68,29 @@ end, { desc = '[D]ebug [S]copes' })
 
 vim.keymap.set('n', '<Leader>du', function() require('dapui').toggle() end, { desc = '[D]ebug [U]I' })
 
+local manim_terminal = -1
+
 vim.keymap.set('n', '<Leader>ma', function()
     local line = vim.fn.line('.')
     local file = vim.fn.expand('%:p')
     local command = "manimgl " .. file .. " -se " .. tostring(line)
-    vim.cmd("botright split | terminal " .. command)
+    vim.cmd("botright split | terminal ")
+    manim_terminal = vim.api.nvim_get_current_win()
+    vim.api.nvim_feedkeys('i'..command.."\n", 'n', false)
+
+end,
+{ desc = "[m][a]nim"})
+
+-- Map for visual mode
+vim.keymap.set('v', '<Leader>ma',  function ()
+    vim.cmd('normal! "+y')
+    vim.api.nvim_feedkeys('<Esc>', 'n', false)
+    vim.api.nvim_set_current_win(manim_terminal)
+    vim.api.nvim_input('icheckpoint_paste()<cr><Esc>')
+end, {desc = "[m][a]nim run"})
+
+vim.keymap.set('n', '<Leader>mc', function()
+    manim_terminal=1
+    print(vim.api.nvim_get_current_win())
 end,
 { desc = "[m][a]nim"})
