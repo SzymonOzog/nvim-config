@@ -70,6 +70,30 @@ vim.keymap.set('n', '<Leader>du', function() require('dapui').toggle() end, { de
 
 local manim_terminal = -1
 
+
+
+function get_first_terminal()
+    local terminal_chans = {}
+
+    for _, chan in pairs(vim.api.nvim_list_chans()) do
+        if chan["mode"] == "terminal" and chan["pty"] ~= "" then
+            table.insert(terminal_chans, chan)
+        end
+    end
+
+    table.sort(terminal_chans, function(left, right)
+        return left["buffer"] < right["buffer"]
+    end)
+
+    return terminal_chans[1]["id"]
+end
+
+function terminal_send(text)
+    local first_terminal_chan = get_first_terminal()
+
+    vim.api.nvim_chan_send(first_terminal_chan, text)
+end
+
 vim.keymap.set('n', '<Leader>ma', function()
     local line = vim.fn.line('.')
     local file = vim.fn.expand('%:p')
@@ -83,14 +107,13 @@ end,
 
 -- Map for visual mode
 vim.keymap.set('v', '<Leader>ma',  function ()
-    vim.cmd('normal! "+y')
-    vim.api.nvim_feedkeys('<Esc>', 'n', false)
-    vim.api.nvim_set_current_win(manim_terminal)
-    vim.api.nvim_input('icheckpoint_paste()<cr><Esc>')
+    terminal_send("checkpoint_paste()\n")
 end, {desc = "[m][a]nim run"})
 
-vim.keymap.set('n', '<Leader>mc', function()
-    manim_terminal=1
-    print(vim.api.nvim_get_current_win())
-end,
-{ desc = "[m][a]nim"})
+vim.keymap.set('v', '<Leader>mr',  function ()
+    terminal_send("reload()\n")
+end, {desc = "[m]anim [r]eload"})
+
+vim.keymap.set('v', '<Leader>mc',  function ()
+    terminal_send("clear_checkpoints()\n")
+end, {desc = "[m]anim [c]lear"})
