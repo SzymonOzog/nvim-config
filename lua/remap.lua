@@ -107,6 +107,7 @@ end,
 
 -- Map for visual mode
 vim.keymap.set('v', '<Leader>ma',  function ()
+    vim.cmd('normal! "+y')
     terminal_send("checkpoint_paste()\n")
 end, {desc = "[m][a]nim run"})
 
