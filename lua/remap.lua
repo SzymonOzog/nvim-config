@@ -111,10 +111,10 @@ vim.keymap.set('v', '<Leader>ma',  function ()
     terminal_send("checkpoint_paste()\n")
 end, {desc = "[m][a]nim run"})
 
-vim.keymap.set('v', '<Leader>mr',  function ()
+vim.keymap.set('n', '<Lejder>mr',  function ()
     terminal_send("reload()\n")
 end, {desc = "[m]anim [r]eload"})
 
-vim.keymap.set('v', '<Leader>mc',  function ()
+vim.keymap.set('n', '<Leader>mc',  function ()
     terminal_send("clear_checkpoints()\n")
 end, {desc = "[m]anim [c]lear"})
