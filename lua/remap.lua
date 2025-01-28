@@ -97,7 +97,7 @@ end
 vim.keymap.set('n', '<Leader>ma', function()
     local line = vim.fn.line('.')
     local file = vim.fn.expand('%:p')
-    local command = "manimgl " .. file .. " -se " .. tostring(line)
+    local command = "manimgl " .. "-l " .. file .. " -se " .. tostring(line)
     vim.cmd("botright split | terminal ")
     manim_terminal = vim.api.nvim_get_current_win()
     vim.api.nvim_feedkeys('i'..command.."\n", 'n', false)
