@@ -68,10 +68,6 @@ end, { desc = '[D]ebug [S]copes' })
 
 vim.keymap.set('n', '<Leader>du', function() require('dapui').toggle() end, { desc = '[D]ebug [U]I' })
 
-local manim_terminal = -1
-
-
-
 function get_first_terminal()
     local terminal_chans = {}
 
@@ -99,7 +95,6 @@ vim.keymap.set('n', '<Leader>ma', function()
     local file = vim.fn.expand('%:p')
     local command = "manimgl " .. "-l " .. file .. " -se " .. tostring(line)
     vim.cmd("botright split | terminal ")
-    manim_terminal = vim.api.nvim_get_current_win()
     vim.api.nvim_feedkeys('i'..command.."\n", 'n', false)
 
 end,
