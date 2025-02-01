@@ -68,7 +68,7 @@ end, { desc = '[D]ebug [S]copes' })
 
 vim.keymap.set('n', '<Leader>du', function() require('dapui').toggle() end, { desc = '[D]ebug [U]I' })
 
-function get_first_terminal()
+local function get_first_terminal()
     local terminal_chans = {}
 
     for _, chan in pairs(vim.api.nvim_list_chans()) do
@@ -84,16 +84,36 @@ function get_first_terminal()
     return terminal_chans[1]["id"]
 end
 
-function terminal_send(text)
+local function terminal_send(text)
     local first_terminal_chan = get_first_terminal()
 
     vim.api.nvim_chan_send(first_terminal_chan, text)
 end
 
+local function get_current_scene_name()
+    local bufnr = vim.api.nvim_get_current_buf()
+    local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+    local cursor_line = vim.fn.line('.') - 1
+    local scene_name = nil
+
+  for i = cursor_line, 1, -1 do
+    local line = lines[i]
+    -- Match class definitions that inherit from Scene or its variants
+    local match = line:match("^%s*class%s+([%w_]+)%s*%(%s*[%w_]*Scene%s*%)")
+
+    if match and match ~= "Scene" then
+      scene_name = match
+      break
+    end
+  end
+
+  return scene_name or error("Scene name not found")
+end
+
 vim.keymap.set('n', '<Leader>ma', function()
     local line = vim.fn.line('.')
     local file = vim.fn.expand('%:p')
-    local command = "manimgl " .. "-l " .. file .. " -se " .. tostring(line)
+    local command = "manimgl " .. "-l " .. file .. " " .. get_current_scene_name() .. " -se " .. tostring(line)
     vim.cmd("botright split | terminal ")
     vim.api.nvim_feedkeys('i'..command.."\n", 'n', false)
 
