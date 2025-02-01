@@ -105,7 +105,7 @@ require('which-key').register({
 
 
 require('mason').setup()
-require('mason-lspconfig').setup()
+require('mason-lspconfig').setup({ensure_installed={"jedi_language_server", "clangd"}, automatic_installation=true})
 require('lspconfig').clangd.setup({})
 
 local servers = {
