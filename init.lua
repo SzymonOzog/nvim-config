@@ -98,6 +98,9 @@ require("harpoonBindings")
 require('nvim-treesitter.install').compilers = { "clang" }
 require('dap-python').setup('python')
 require('dap_config')
+table.insert(require('dap').configurations.python, {
+  justMyCode = false
+})
 require('colors')
 require('copilot_setup')
 require("dapui").setup()
