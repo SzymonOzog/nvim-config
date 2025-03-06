@@ -101,6 +101,11 @@ require('dap_config')
 table.insert(require('dap').configurations.python, {
   justMyCode = false
 })
+local dap = require('dap')
+
+for _, config in ipairs(dap.configurations.python) do
+  config.justMyCode = false
+end
 require('colors')
 require('copilot_setup')
 require("dapui").setup()
