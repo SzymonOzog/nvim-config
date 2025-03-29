@@ -110,6 +110,55 @@ local function get_current_scene_name()
   return scene_name or error("Scene name not found")
 end
 
+local function parse_frame_data_and_create_command()
+    local term_chan = get_first_terminal()
+    local term_buf = vim.api.nvim_get_chan_info(term_chan).buffer
+    -- Get all lines from the terminal buffer
+    local lines = vim.api.nvim_buf_get_lines(term_buf, -11, -1, false)
+    -- Variables to store parsed values
+    local euler_angles = nil
+    local center = nil
+    local shape = nil
+    -- Parse the output
+    for i, line in ipairs(lines) do
+        -- Look for euler angles output
+        local angles_match = line:match("Out%[%d+%]: array%(%[(.-)%]%)$")
+        if angles_match and not euler_angles then
+            euler_angles = angles_match
+        end
+        -- Look for center output
+        local center_match = line:match("Out%[%d+%]: array%(%[(.-)%]")
+        if center_match and line:find("dtype=float32") and not center then
+            center = center_match
+        end
+        -- Look for shape output
+        local shape_match = line:match("Out%[%d+%]: %((.-)%)$")
+        if shape_match and not shape then
+            shape = shape_match
+        end
+        -- If we've found all values, we can stop
+        if euler_angles and center and shape then
+            break
+        end
+    end
+    -- Create the animation command
+    if euler_angles and center and shape then
+        local command = string.format(
+            "self.frame.animate.set_euler_angles(%s).set_shape(%s).move_to([%s])",
+            euler_angles,
+            shape,
+            center
+        )
+        -- Copy to clipboard or insert in buffer
+        vim.fn.setreg('+', command)
+        print("Animation command copied to clipboard: " .. command)
+        return command
+    else
+        print("Could not parse all required values from terminal output")
+        return nil
+    end
+end
+
 vim.keymap.set('n', '<Leader>ma', function()
     local line = vim.fn.line('.')
     local file = vim.fn.expand('%:p')
@@ -133,3 +182,11 @@ end, {desc = "[m]anim [r]eload"})
 vim.keymap.set('n', '<Leader>mc',  function ()
     terminal_send("clear_checkpoints()\n")
 end, {desc = "[m]anim [c]lear"})
+
+vim.keymap.set('n', '<Leader>mf',  function ()
+    terminal_send("self.frame.get_euler_angles()\n")
+    terminal_send("self.frame.get_center()\n")
+    terminal_send("self.frame.get_shape()\n")
+    vim.cmd.sleep(1)
+    parse_frame_data_and_create_command()
+end, {desc = "[m]anim [f]rame"})
