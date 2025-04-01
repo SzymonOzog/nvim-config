@@ -37,7 +37,9 @@ require('lazy').setup({
     {
       'tzachar/local-highlight.nvim',
        config = function()
-        require('local-highlight').setup()
+        require('local-highlight').setup({
+            animate = {enabled = false}
+        })
        end
     },
 
