@@ -163,6 +163,7 @@ vim.keymap.set('n', '<Leader>ma', function()
     local line = vim.fn.line('.')
     local file = vim.fn.expand('%:p')
     local command = "manimgl " .. "-l " .. file .. " " .. get_current_scene_name() .. " -se " .. tostring(line)
+    vim.cmd(":wa")
     vim.cmd("botright split | terminal ")
     vim.api.nvim_feedkeys('i'..command.."\n", 'n', false)
 
