@@ -77,15 +77,19 @@ local function get_first_terminal()
         end
     end
 
+    if table.getn(terminal_chans) == 0 then
+        return nil;
+    end
+
     table.sort(terminal_chans, function(left, right)
         return left["buffer"] < right["buffer"]
     end)
 
-    return terminal_chans[1]["id"]
+    return terminal_chans[1]
 end
 
 local function terminal_send(text)
-    local first_terminal_chan = get_first_terminal()
+    local first_terminal_chan = get_first_terminal()["id"]
 
     vim.api.nvim_chan_send(first_terminal_chan, text)
 end
@@ -111,7 +115,7 @@ local function get_current_scene_name()
 end
 
 local function parse_frame_data_and_create_command()
-    local term_chan = get_first_terminal()
+    local term_chan = get_first_terminal()["id"]
     local term_buf = vim.api.nvim_get_chan_info(term_chan).buffer
     -- Get all lines from the terminal buffer
     local lines = vim.api.nvim_buf_get_lines(term_buf, -11, -1, false)
@@ -160,6 +164,14 @@ local function parse_frame_data_and_create_command()
 end
 
 vim.keymap.set('n', '<Leader>ma', function()
+    local curr_term = get_first_terminal()
+
+    -- Close the current terminal if it exists
+    if curr_term then
+        -- Delete the terminal buffer
+        vim.api.nvim_buf_delete(curr_term.buffer, { force = true })
+    end
+
     local line = vim.fn.line('.')
     local file = vim.fn.expand('%:p')
     local command = "manimgl " .. "-l " .. file .. " " .. get_current_scene_name() .. " -se " .. tostring(line)
