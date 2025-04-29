@@ -175,9 +175,18 @@ vim.keymap.set('n', '<Leader>ma', function()
     local line = vim.fn.line('.')
     local file = vim.fn.expand('%:p')
     local command = "manimgl " .. "-l " .. file .. " " .. get_current_scene_name() .. " -se " .. tostring(line)
+
+    local curr_buf = vim.api.nvim_get_current_buf()
+    local curr_win = vim.api.nvim_get_current_win()
+
     vim.cmd(":wa")
     vim.cmd("botright split | terminal ")
+
     vim.api.nvim_feedkeys('i'..command.."\n", 'n', false)
+        vim.schedule(function()
+        vim.api.nvim_set_current_win(curr_win)
+        vim.api.nvim_set_current_buf(curr_buf)
+    end)
 
 end,
 { desc = "[m][a]nim"})
