@@ -163,16 +163,15 @@ local function parse_frame_data_and_create_command()
     end
 end
 
-vim.keymap.set('n', '<Leader>ma', function()
+local function run_manim(line)
     local curr_term = get_first_terminal()
 
-    -- Close the current terminal if it exists
+    -- close the current terminal if it exists
     if curr_term then
-        -- Delete the terminal buffer
+        -- delete the terminal buffer
         vim.api.nvim_buf_delete(curr_term.buffer, { force = true })
     end
 
-    local line = vim.fn.line('.')
     local file = vim.fn.expand('%:p')
     local command = "manimgl " .. "-l " .. file .. " " .. get_current_scene_name() .. " -se " .. tostring(line)
 
@@ -187,9 +186,19 @@ vim.keymap.set('n', '<Leader>ma', function()
         vim.api.nvim_set_current_win(curr_win)
         vim.api.nvim_set_current_buf(curr_buf)
     end)
+end
 
+vim.keymap.set('n', '<leader>ma', function()
+    local line = vim.fn.line('.')
+    run_manim(line)
 end,
 { desc = "[m][a]nim"})
+
+vim.keymap.set('n', '<leader>me', function()
+    local line = vim.fn.line('$')
+    run_manim(line)
+end,
+{ desc = "[m]anim [e]nd"})
 
 -- Map for visual mode
 vim.keymap.set('v', '<Leader>ma',  function ()
