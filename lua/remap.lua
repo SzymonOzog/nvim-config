@@ -111,7 +111,27 @@ local function get_current_scene_name()
     end
   end
 
-  return scene_name or error("Scene name not found")
+  return scene_name
+end
+
+local function get_first_scene_name()
+    local bufnr = vim.api.nvim_get_current_buf()
+    local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+    local end_line = vim.fn.line('$')
+    local scene_name = nil
+
+  for i = end_line, 1, -1 do
+    local line = lines[i]
+    -- Match class definitions that inherit from Scene or its variants
+    local match = line:match("^%s*class%s+([%w_]+)%s*%(%s*[%w_]*Scene%s*%)")
+
+    if match and match ~= "Scene" then
+      scene_name = match
+      break
+    end
+  end
+
+  return scene_name
 end
 
 local function parse_frame_data_and_create_command()
@@ -163,7 +183,7 @@ local function parse_frame_data_and_create_command()
     end
 end
 
-local function run_manim(line)
+local function run_manim(line, scene)
     local curr_term = get_first_terminal()
 
     -- close the current terminal if it exists
@@ -173,13 +193,13 @@ local function run_manim(line)
     end
 
     local file = vim.fn.expand('%:p')
-    local command = "manimgl " .. "-l " .. file .. " " .. get_current_scene_name() .. " -se " .. tostring(line)
+    local command = "manimgl " .. "-l " .. file .. " " .. scene .. " -se " .. tostring(line)
 
     local curr_buf = vim.api.nvim_get_current_buf()
     local curr_win = vim.api.nvim_get_current_win()
 
     vim.cmd(":wa")
-    vim.cmd("botright split | terminal ")
+    vim.cmd("botright split | terminal")
 
     vim.api.nvim_feedkeys('i'..command.."\n", 'n', false)
         vim.schedule(function()
@@ -190,13 +210,13 @@ end
 
 vim.keymap.set('n', '<leader>ma', function()
     local line = vim.fn.line('.')
-    run_manim(line)
+    run_manim(line, get_current_scene_name())
 end,
 { desc = "[m][a]nim"})
 
 vim.keymap.set('n', '<leader>me', function()
     local line = vim.fn.line('$')
-    run_manim(line)
+    run_manim(line, get_first_scene_name())
 end,
 { desc = "[m]anim [e]nd"})
 
