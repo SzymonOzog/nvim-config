@@ -199,7 +199,7 @@ local function run_manim(line, scene)
     local curr_win = vim.api.nvim_get_current_win()
 
     vim.cmd(":wa")
-    vim.cmd("botright split | terminal")
+    vim.cmd("botright split | resize 15 | terminal")
 
     vim.api.nvim_feedkeys('i'..command.."\n", 'n', false)
         vim.schedule(function()
