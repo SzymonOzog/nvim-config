@@ -101,12 +101,15 @@ require('nvim-treesitter.install').compilers = { "clang" }
 require('dap-python').setup('python3')
 require('dap_config')
 table.insert(require('dap').configurations.python, {
-  justMyCode = false
+  justMyCode = false,
+  subProcess = true
+
 })
 local dap = require('dap')
 
 for _, config in ipairs(dap.configurations.python) do
   config.justMyCode = false
+  config.subProcess = true
 end
 require('colors')
 require('copilot_setup')
