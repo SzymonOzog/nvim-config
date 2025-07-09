@@ -52,19 +52,20 @@ vim.keymap.set({ 'n', 'v' }, '<Leader>dh', function()
     require('dap.ui.widgets').hover()
 end, { desc = '[D]ebug [H]hover' })
 
-vim.keymap.set({ 'n', 'v' }, '<Leader>dp', function()
-    require('dap.ui.widgets').preview()
-end, { desc = '[D]ebug [P]review' })
+vim.keymap.set({ 'n', 'v' }, '<Leader>dS', function()
+    local widgets = require('dap.ui.widgets')
+    widgets.centered_float(widgets.sessions)
+end, { desc = '[D]ebug [S]essions' })
 
 vim.keymap.set('n', '<Leader>df', function()
     local widgets = require('dap.ui.widgets')
     widgets.centered_float(widgets.frames)
 end, { desc = '[D]ebug [F]rames' })
 
-vim.keymap.set('n', '<Leader>dS', function()
+vim.keymap.set('n', '<Leader>dc', function()
     local widgets = require('dap.ui.widgets')
     widgets.centered_float(widgets.scopes)
-end, { desc = '[D]ebug [S]copes' })
+end, { desc = '[D]ebug s[c]opes' })
 
 vim.keymap.set('n', '<Leader>du', function() require('dapui').toggle() end, { desc = '[D]ebug [U]I' })
 
