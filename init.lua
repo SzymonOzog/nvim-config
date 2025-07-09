@@ -98,7 +98,7 @@ require("treesitter")
 require("lsp")
 require("harpoonBindings")
 require('nvim-treesitter.install').compilers = { "clang" }
-require('dap-python').setup('python')
+require('dap-python').setup('python3')
 require('dap_config')
 table.insert(require('dap').configurations.python, {
   justMyCode = false
