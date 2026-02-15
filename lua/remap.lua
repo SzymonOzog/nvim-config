@@ -209,6 +209,8 @@ local function run_manim(line, scene)
     end)
 end
 
+vim.keymap.set('n', '<leader>cc', '<cmd>CodeCompanionChat Toggle<cr>', { desc = '[C]ode[C]ompanion Chat Toggle' })
+
 vim.keymap.set('n', '<leader>ma', function()
     local line = vim.fn.line('.')
     run_manim(line, get_current_scene_name())
