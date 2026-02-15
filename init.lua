@@ -85,6 +85,15 @@ require('lazy').setup({
         build = ':TSUpdate',
     },
     {
+        "olimorris/codecompanion.nvim",
+        version = "^18.0.0",
+        opts = {},
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "nvim-treesitter/nvim-treesitter",
+        },
+    },
+    {
         "ThePrimeagen/harpoon",
         branch = "harpoon2",
         dependencies = { "nvim-lua/plenary.nvim" }
@@ -121,4 +130,31 @@ require('local-highlight').setup({
     min_match_len = 1,
     max_match_len = math.huge,
     highlight_single_match = true,
+})
+require("codecompanion").setup({
+  adapters = {
+    acp = {
+      poolside = function()
+        return require("codecompanion.adapters").extend("claude_code", {
+          name = "poolside",
+          formatted_name = "Poolside",
+          commands = {
+            default = {
+              "pool",
+              "acp",
+              "--debug",
+              "--no-fetch-models",
+              "--agent-name",
+              "anthropic/claude-opus-4.6",
+            },
+          },
+        })
+      end,
+    },
+  },
+  interactions = {
+    chat = {
+      adapter = "poolside",
+    },
+  },
 })
