@@ -211,6 +211,17 @@ end
 
 vim.keymap.set('n', '<leader>cc', '<cmd>CodeCompanionChat Toggle<cr>', { desc = '[C]ode[C]ompanion Chat Toggle' })
 
+vim.api.nvim_create_autocmd("VimLeavePre", {
+    desc = "Close CodeCompanion chat buffers before exiting to avoid dead windows on restore",
+    callback = function()
+        for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+            if vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].filetype == "codecompanion" then
+                vim.api.nvim_buf_delete(buf, { force = true })
+            end
+        end
+    end,
+})
+
 vim.keymap.set('n', '<leader>ma', function()
     local line = vim.fn.line('.')
     run_manim(line, get_current_scene_name())
