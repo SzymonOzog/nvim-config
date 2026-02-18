@@ -106,7 +106,6 @@ require('which-key').register({
 
 require('mason').setup()
 require('mason-lspconfig').setup({ensure_installed={"jedi_language_server", "clangd"}, automatic_installation=true})
-require('lspconfig').clangd.setup({})
 
 local servers = {
   lua_ls = {
@@ -131,16 +130,19 @@ mason_lspconfig.setup {
   ensure_installed = vim.tbl_keys(servers),
 }
 
-mason_lspconfig.setup_handlers {
-  function(server_name)
-    require('lspconfig')[server_name].setup {
-      capabilities = capabilities,
-      on_attach = on_attach,
-      settings = servers[server_name],
-      filetypes = (servers[server_name] or {}).filetypes,
-    }
-  end,
-}
+-- Register per-server configs
+for server_name, server_opts in pairs(servers) do
+  local opts = server_opts or {}
+
+  vim.lsp.config(server_name, {
+    capabilities = capabilities,
+    on_attach = on_attach,
+    settings = opts,
+    filetypes = opts.filetypes,
+  })
+end
+
+vim.lsp.enable(vim.tbl_keys(servers))
 
 local cmp = require 'cmp'
 local luasnip = require 'luasnip'
