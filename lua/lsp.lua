@@ -105,9 +105,11 @@ require('which-key').register({
 
 
 require('mason').setup()
-require('mason-lspconfig').setup({ensure_installed={"jedi_language_server", "clangd"}, automatic_installation=true})
+require('mason-lspconfig').setup({automatic_installation=true})
 
 local servers = {
+  clangd = {},
+  jedi_language_server = {},
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
