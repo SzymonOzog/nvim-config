@@ -31,7 +31,21 @@ require('lazy').setup({
     { 'folke/which-key.nvim',          opts = {} },
     { 'rmagatti/auto-session',         opts = {} },
     { 'nvim-telescope/telescope.nvim', branch = '0.1.x',                       dependencies = { 'nvim-lua/plenary.nvim' } },
-    { 'numToStr/Comment.nvim',         opts = {} },
+    {
+        'numToStr/Comment.nvim',
+        opts = {
+            -- The treesitter-based commentstring resolution in Comment.nvim
+            -- crashes for filetypes whose parser isn't installed (e.g. `cuda`),
+            -- producing "[Comment.nvim] nil" and refusing to comment. Returning
+            -- a commentstring from pre_hook short-circuits that path.
+            pre_hook = function()
+                if vim.bo.filetype == 'cuda' then
+                    return '// %s'
+                end
+            end,
+        },
+    },
+
     { 'zadirion/Unreal.nvim',          dependencies = { 'tpope/vim-dispatch' } },
 
     {
@@ -132,6 +146,14 @@ require('local-highlight').setup({
     max_match_len = math.huge,
     highlight_single_match = true,
 })
+-- CUDA files: set commentstring so Comment.nvim's `gc` works in visual mode.
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'cuda' },
+  callback = function()
+    vim.bo.commentstring = '// %s'
+  end,
+})
+
 require("codecompanion").setup({
   adapters = {
     acp = {
